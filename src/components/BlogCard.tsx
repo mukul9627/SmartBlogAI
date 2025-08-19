@@ -55,7 +55,7 @@ const latestBlogs = [
     title:
       "Bringing Pets to the UK: Understanding DEFRA Rules",
     image:
-      "https://images.unsplash.com/photo-1601758124064-3e7a3a1c4f58",
+      "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
   },
 ];
 
@@ -149,8 +149,9 @@ const BlogCard = () => {
 
         {/* Latest Blogs */}
         <div>
-          <h3 className="text-xl font-bold mb-4">LATEST BLOGS</h3>
-          <ul className="space-y-4">
+          <h3 className="text-xl font-bold pt-4 pb-4">LATEST BLOGS</h3>
+         <ul className="space-y-4 bg-white border border-[#c0c6cc] rounded-[7px] p-5 shadow-md">
+
             {latestBlogs.map((item, idx) => (
               <li key={idx} className="flex gap-3 items-center pt-4">
                 <img

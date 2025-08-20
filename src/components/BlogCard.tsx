@@ -1,44 +1,51 @@
+"use client";
 import React from "react";
+import { useState, useEffect } from "react";
 
-const blogs = [
+// const blogs = [
 
   
-{
-    date: "14 AUG",
-    image:
-      "https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-    title: "From Cages to the Skies – A True Independence for All",
-  },
-  {
-    date: "31 JUL",
-    image:
-      "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
-    title:
-      "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
-  },
-  {
-    date: "31 JUL",
-    image:
-      "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
-    title:
-      "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
-  },
-  {
-    date: "31 JUL",
-    image:
-      "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
-    title:
-      "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
-  },
-   {
-    date: "31 JUL",
-    image:
-      "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
-    title:
-      "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
-  },
-];
-
+// {
+//     date: "14 AUG",
+//     image:
+//       "https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+//     title: "From Cages to the Skies – A True Independence for All",
+//   },
+//   {
+//     date: "31 JUL",
+//     image:
+//       "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
+//     title:
+//       "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
+//   },
+//   {
+//     date: "31 JUL",
+//     image:
+//       "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
+//     title:
+//       "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
+//   },
+//   {
+//     date: "31 JUL",
+//     image:
+//       "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
+//     title:
+//       "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
+//   },
+//    {
+//     date: "31 JUL",
+//     image:
+//       "https://images.unsplash.com/photo-1530521954074-e64f6810b32d",
+//     title:
+//       "Breed-Specific Flight Restrictions: Why Some Dogs Are on the No-Fly List",
+//   },
+// ];
+type Blog = {
+  _id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+};
 const latestBlogs = [
   {
     title: "From Cages to the Skies – A True Independence for All",
@@ -60,6 +67,28 @@ const latestBlogs = [
 ];
 
 const BlogCard = () => {
+   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/blog");
+        const data = await res.json();
+        setBlogs(data);
+      } catch (err) {
+        console.error("❌ Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (loading) return <p>Loading blogs...</p>;
+
   return (
 <>
  <section className="relative w-full h-[700px] flex items-center justify-center bg-gray-900">
@@ -92,33 +121,36 @@ const BlogCard = () => {
   <div className="lg:col-span-2">
       {/* Responsive grid: 2 columns on medium+ screens */}
       <div className="grid md:grid-cols-2 gap-8">
-        {blogs.map((blog, idx) => (
-          <div
-            key={idx}
-            className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-          >
-            {/* Image */}
-            <div className="relative group">
-              <img
-                src={blog.image}
-                alt={blog.title}
-                className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
-              />
-              {/* Date badge */}
-              <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-sm font-bold rounded">
-                {blog.date}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-6">
-              <h3 className="text-lg font-bold mb-2">{blog.title}</h3>
-              <p className="text-gray-600 text-sm font-medium cursor-pointer hover:underline">
-                Read More
-              </p>
+       {blogs.map((blog) => (
+        <div
+          key={blog._id}
+          className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+        >
+          {/* Image (placeholder since API has none) */}
+          <div className="relative group">
+            <img
+              src="https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" // fallback placeholder
+              alt={blog.title}
+              className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
+            />
+            {/* Date badge */}
+            <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-sm font-bold rounded">
+              {new Date(blog.createdAt).toLocaleDateString()}
             </div>
           </div>
-        ))}
+
+          {/* Content */}
+          <div className="p-6">
+            <h3 className="text-lg font-bold mb-2">{blog.title}</h3>
+            <p className="text-gray-700 text-sm line-clamp-3">
+              {blog.content}
+            </p>
+            <p className="mt-2 text-gray-600 text-sm font-medium cursor-pointer hover:underline">
+              Read More
+            </p>
+          </div>
+        </div>
+      ))}
       </div>
     </div>
 

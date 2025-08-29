@@ -106,6 +106,7 @@ type Blog = {
   title: string;
   image: string;
   content: string;
+  // category: string;
 };
 
 export default function AddBlog() {
@@ -149,7 +150,8 @@ export default function AddBlog() {
       setBlog({
         title: data.title,
         content: data.content,
-        image: imageUrl,
+        image: imageUrl
+        // category: data.category
       });
     } catch (err) {
       console.error("❌ Generate Error:", err);

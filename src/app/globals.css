@@ -83,3 +83,7 @@ h1{
 p{
   color: #0a0a0a;
 }
+
+label{
+  color: gray;
+}

@@ -8,6 +8,7 @@ type Blog = {
   title: string;
   content: string;
   createdAt: string;
+  image?: string;    // optional, if not always present
 };
 
 const BlogType = {
@@ -89,7 +90,7 @@ const BlogCard = () => {
                 >
                   <div className="relative">
                     <img
-                      src="https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg"
+                      src={blog.image || "https://via.placeholder.com/600x400?text=No+Image"}
                       alt={blog.title}
                       className="w-full h-64 object-cover"
                     />
@@ -164,7 +165,7 @@ const BlogCard = () => {
                 return (
                   <li key={blog._id} className="flex gap-3 items-center pt-4">
                     <img
-                      src="https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                      src={blog.image || "https://via.placeholder.com/600x400?text=No+Image"}
                       alt={blog.title}
                       className="w-16 h-12 object-cover rounded"
                     />

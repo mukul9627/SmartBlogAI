@@ -1,50 +1,20 @@
-// import { decryptId } from "@/utils/crypto";
-
-// type BlogDetailPageProps = {
-//   params: { id: string };
-// };
-
-// export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
-//   const decryptedId = decryptId(params.id);
-
-//   if (!decryptedId) {
-//     return <p className="text-center text-red-500">❌ Invalid Blog ID</p>;
-//   }
-
-//   const res = await fetch(`http://localhost:5000/api/blog/one/${decryptedId}`, {
-//     cache: "no-store",
-//   });
-
-//   if (!res.ok) {
-//     return <p className="text-center text-red-500">❌ Blog not found</p>;
-//   }
-
-//   const blog = await res.json();
-
-//   return (
-//     <div className="max-w-3xl mx-auto p-6">
-//       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
-//       <p className="text-gray-600 mb-6">
-//         {new Date(blog.createdAt).toLocaleDateString()}
-//       </p>
-//       <div className="text-lg leading-relaxed">{blog.content}</div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { decryptId } from "@/utils/crypto";
+import ReactMarkdown from "react-markdown";
 
 type Blog = {
   _id: string;
   title: string;
   content: string;
   createdAt: string;
+    image?: string; 
 };
-
+const BlogType = {
+  Category: "Information",
+};
 export default function BlogPageDetail() {
   const { id } = useParams();
   const [blog, setBlog] = useState<Blog | null>(null);
@@ -82,9 +52,23 @@ export default function BlogPageDetail() {
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
       <p className="text-gray-500 text-sm mb-6">
         {new Date(blog.createdAt).toLocaleDateString()}
-      </p>
+      </p> <div className="relative">
+                    <img
+                      src={blog.image || "https://via.placeholder.com/600x400?text=No+Image"}
+                      alt={blog.title}
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-sm font-bold rounded">
+                      {BlogType.Category}
+                      {/* {new Date(blog.createdAt).toLocaleDateString()} */}
+                    </div>
+                  </div>
       <div className="prose">
-        <p className="text-[15px]">{blog.content}</p>
+        {/* <p className="text-[15px]">{blog.content}</p> */}
+        <p className="text-[15px] whitespace-pre-line">{blog.content}</p>
+        {/* <ReactMarkdown className="prose prose-sm max-w-none text-[15px]">
+  {blog.content}
+</ReactMarkdown> */}
       </div>
     </div>
   );
